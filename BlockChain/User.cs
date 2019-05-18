@@ -47,15 +47,24 @@ namespace BlockChain
             }
         }
 
-        public Block getBlockByID(int ID)
+        public void changeBlockValueByID(int ID, int value)
         {
             int currID = 0;
-            foreach(DictionaryEntry de in blocks)
+            Block block = new Block();
+            foreach (DictionaryEntry de in blocks)
             {
                 if (currID == ID)
-                    return (Block)de.Value;
+                {
+                    block = ((Block)de.Value);
+                }                    
+                currID++;
             }
-            return null;
+            
+            Block temp = new Block();
+            temp.previousHash = block.previousHash;
+            temp.data = value;
+            blocks.Remove(block.ToString());
+            blocks.Add(temp.ToString(), temp);
         }
         
         public bool verifyBlocks()

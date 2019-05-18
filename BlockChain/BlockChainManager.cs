@@ -73,7 +73,8 @@ namespace BlockChain
         {
             lock(dataProcessingList)
             {
-                Block block = new Block(lastBlock.ToString(), dataProcessingList[0]);
+                int val = dataProcessingList[0];
+                Block block = new Block(lastBlock.ToString(), val);
                 foreach (User user in users)
                 {
                     if (!user.addBlock(block))
