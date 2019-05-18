@@ -78,7 +78,7 @@ namespace BlockChain
             return true;
         }
 
-        public override string ToString() //adklsfjghasgdsfh oigdf gidashfjdasif haskjdkjasf hdas fjdhas
+        public override string ToString() // This IS SPARTĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄĄ ĄĄĄĄĄĄĄĄĄĄĄĄĄĄ !!!!!!!!!!!!!!!!!!!!!!!!!!
         {
             string s = "";
             foreach(DictionaryEntry block in blocks)

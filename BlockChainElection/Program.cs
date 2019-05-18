@@ -111,11 +111,5 @@ namespace BlockChainElection
                 "5. Baigti"+
                 "Pasirinkite: ");
         }
-
-        private static int randVote()
-        {
-            Random random = new Random();
-            return random.Next(1, 5);
-        }
     }
 }
