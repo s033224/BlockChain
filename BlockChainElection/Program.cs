@@ -55,7 +55,8 @@ namespace BlockChainElection
                         int userID = int.Parse(Console.ReadLine()) -1;
                         Console.WriteLine("\n"+ bcm.users[userID].ToString());
                         int blockID = int.Parse(Console.ReadLine()) -1;
-                        
+                        Block block = bcm.users[userID].getBlockByID(blockID);
+                        block.data = 420;
                         break;
                     }
                 default:
