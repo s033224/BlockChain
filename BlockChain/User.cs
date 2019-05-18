@@ -21,17 +21,12 @@ namespace BlockChain
         {
             blocks = new Hashtable();
             Block block = new Block(null, -1);
-            blocks.Add("FirstBlock", block);
+            blocks.Add(block.ToString(), block);
         }
 
-        public bool addBlock(Block block)
+        public void addBlock(Block block)
         {
-            if(verifyBlocks())
-            {
                 blocks.Add(block.ToString(), block);
-                return true;
-            }
-            return false;
         }
 
         public void getSyncedBlocks()
@@ -67,21 +62,17 @@ namespace BlockChain
             blocks.Add(temp.ToString(), temp);
         }
         
-        public bool verifyBlocks()
+        public bool verifyBlocks(Block lastBlock)
         {
-            int fake = 0;
-            foreach(DictionaryEntry de in blocks)
+            Block block = lastBlock;
+            while(block.previousHash != null)
             {
-                if(de.Key != null)
-                {
-                    if (!blocks.Contains(((Block)de.Value).ToString()))
-                    {
-                        fake++;
-                    }
-                }
+                if (!blocks.ContainsKey(block.ToString()))
+                    return false;
+                block = (Block)blocks[block.previousHash];
+                if (block == null)
+                    return false;
             }
-            if (fake > 1)
-                return false;
             return true;
         }
 

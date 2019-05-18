@@ -21,7 +21,11 @@ namespace BlockChain
             users = new List<User>();
             dataProcessingList = new List<int>();
             populateUsers(peers);
-            lastBlock = (Block)users[0].blocks["FirstBlock"];
+            foreach(DictionaryEntry de in users[0].blocks)
+            {
+                lastBlock = (Block)de.Value;
+            }
+            
         }
 
         public void populateUsers(int ammount)
@@ -39,15 +43,16 @@ namespace BlockChain
             List<int> results = new List<int>();
             foreach(User user in users)
             {
-                if(user.verifyBlocks())
+                if(user.verifyBlocks(lastBlock))
                 {
                     Block block = lastBlock;
                     while(block != null)
                     {
+                        if (block.previousHash == null)
+                            return results;
                         results.Add(block.data);
                         block = (Block)user.blocks[block.previousHash];
                     }
-                    return results;
                 }
             }
             return null;
@@ -60,6 +65,11 @@ namespace BlockChain
 
         public Hashtable syncTable()
         {
+            foreach(User user in users)
+            {
+                if (user.verifyBlocks(lastBlock))
+                    return user.blocks;
+            }
             return null;
         }
 
@@ -77,8 +87,12 @@ namespace BlockChain
                 Block block = new Block(lastBlock.ToString(), val);
                 foreach (User user in users)
                 {
-                    if (!user.addBlock(block))
+                    if(user.verifyBlocks(lastBlock))
                     {
+                        user.addBlock(block);
+                    }
+                    else
+                    { 
                         MessageBox.Show("Block was incorrect... SYNCING...");
                         user.getSyncedBlocks();
                         try
