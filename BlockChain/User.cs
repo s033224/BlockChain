@@ -37,13 +37,14 @@ namespace BlockChain
         public void getSyncedBlocks()
         {
             Hashtable tempBlocks = getBlocks.Invoke();
-            if(tempBlocks!=null)
+            if (tempBlocks != null)
             {
                 blocks = new Hashtable();
                 foreach (DictionaryEntry de in tempBlocks)
                 {
                     blocks.Add(de.Key, de.Value);
                 }
+            }
         }
 
         public Block getBlockByID(int ID)
@@ -71,6 +72,7 @@ namespace BlockChain
                     }
                 }
             }
+
             if (fake > 1)
                 return false;
             return true;

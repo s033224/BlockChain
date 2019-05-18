@@ -39,7 +39,7 @@ namespace BlockChain
             List<int> results = new List<int>();
             foreach(User user in users)
             {
-                if(user.verifyBlocks())
+                if(!user.verifyBlocks())
                 {
                     Block block = lastBlock;
                     while(block != null)
