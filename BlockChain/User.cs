@@ -54,7 +54,7 @@ namespace BlockChain
             {
                 if (currID == ID)
                     return (Block)de.Value;
-                currID++;  
+                currID++;   
             }
             return null; 
         }
