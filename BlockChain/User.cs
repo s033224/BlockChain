@@ -54,8 +54,9 @@ namespace BlockChain
             {
                 if (currID == ID)
                     return (Block)de.Value;
+                currID++;
             }
-            return null;
+            return null; 
         }
         
         public bool verifyBlocks()
