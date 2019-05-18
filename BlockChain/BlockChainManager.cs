@@ -64,7 +64,7 @@ namespace BlockChain
         }
 
         public void addData(int vote)
-        {
+        {    
             dataProcessingList.Add(vote);
             addDataToBlockchain();
         }
