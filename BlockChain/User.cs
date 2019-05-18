@@ -44,7 +44,6 @@ namespace BlockChain
                 {
                     blocks.Add(de.Key, de.Value);
                 }
-            }
         }
 
         public Block getBlockByID(int ID)
