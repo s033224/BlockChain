@@ -12,78 +12,78 @@ namespace BlockChain
 {
     public class User
     {
-        public delegate Hashtable Syncblocks();
-        public Syncblocks syncBlocks;
+        public delegate Hashtable requestBlocks();
+        public requestBlocks getBlocks;
 
         public Hashtable blocks { get; set; }
-        private Block lastAddedBlock { get; set; }
 
         public User()
         {
             blocks = new Hashtable();
-            blocks.Add("startBlock", new Block(null, -1));
-            lastAddedBlock = (Block)blocks["startBlock"];
+            Block block = new Block(null, -1);
+            blocks.Add("FirstBlock", block);
         }
 
-        public User(Hashtable blocks)
+        public bool addBlock(Block block)
         {
-            blocks = new Hashtable();
-            this.blocks = blocks;
-        }
-
-
-        public void addData(int value)
-        {
-            Block block = generateBlock(value);
             if(verifyBlocks())
             {
-                lastAddedBlock = block;
-                blocks.Add(objectToStringHash(block), block);
-            }else
-            {
-                blocks = syncBlocks?.Invoke();
-                if (blocks != null)
-                    addData(value);
-            }
-        }
-
-        private Block generateBlock(int value)
-        {
-            return new Block(objectToStringHash(lastAddedBlock), value);
-        }
-
-        public bool verifyBlocks()
-        {
-            Block block = lastAddedBlock;
-            while(!String.IsNullOrEmpty(block.previousHash))
-            {
-                if(blocks.Count > 1)
-                {
-                    //Hash table has this object
-                    if (blocks.ContainsKey(objectToStringHash(block)))
-                    {
-                        //Hash table must have previous object
-                        //if (!blocks.ContainsKey(objectToStringHash((Block)blocks[block.previousHash])))
-                            //return false;
-                        block = (Block)blocks[block.previousHash];
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                blocks.Add(block.ToString(), block);
                 return true;
             }
-            return true;                
+            return false;
         }
 
-
-        private static readonly Object locker = new Object();
-
-        public static string objectToStringHash(Block objectToSerialize)
+        public void getSyncedBlocks()
         {
-            return Hash.GetHashString(objectToSerialize.ToString());
+            Hashtable tempBlocks = getBlocks.Invoke();
+            if(tempBlocks!=null)
+            {
+                blocks = new Hashtable();
+                foreach (DictionaryEntry de in tempBlocks)
+                {
+                    blocks.Add(de.Key, de.Value);
+                }
+            }
         }
 
+        public Block getBlockByID(int ID)
+        {
+            int currID = 0;
+            foreach(DictionaryEntry de in blocks)
+            {
+                if (currID == ID)
+                    return (Block)de.Value;
+            }
+            return null;
+        }
+        
+        public bool verifyBlocks()
+        {
+            int fake = 0;
+            foreach(DictionaryEntry de in blocks)
+            {
+                if(de.Key != null)
+                {
+                    if (!blocks.Contains(((Block)de.Value).ToString()))
+                    {
+                        fake++;
+                    }
+                }
+            }
+            if (fake > 1)
+                return false;
+            return true;
+        }
+
+        public override string ToString()
+        {
+            string s = "";
+            foreach(DictionaryEntry block in blocks)
+            {
+                s += $"\n{((Block)block.Value).ToString()} - {((Block)block.Value).previousHash} -  {((Block)block.Value).data}";
+            }
+            return s;
+        }
     }
 }

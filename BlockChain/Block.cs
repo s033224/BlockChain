@@ -16,15 +16,15 @@ namespace BlockChain
 
         public Block() { }
 
-        public Block(string previousHash, int vote)
+        public Block(string previousHash, int data)
         {
             this.previousHash = previousHash;
-            this.data = vote;
+            this.data = data;
         }
 
         public override string ToString()
         {
-            return previousHash + data;
+            return Hash.GetHashString($"PreviousHash:{previousHash}\n{data}");
         }
 
     }
